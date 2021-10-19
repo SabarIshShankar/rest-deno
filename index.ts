@@ -1,13 +1,11 @@
 import {Application, Router} from "https://deno.land/x/oak@v6.4.2/mod.ts";
-
-const router = new Router();
-
-router.get("/",  (context) => {
-	context.response.body = "deno hello";
-});
+import {APP_HOST, APP_PORT} from './config/config.ts';
+import router from './routes/routes.ts';
 
 const app = new Application()
-	.use(router.routes())
-	.use(router.allowedMethods());
 
-await app.listen({port: 3000});
+app.use(router.routes())
+app.use(router.allowedMethods())
+
+console.log(` started at Post ${APP_PORT}`)
+await app.listen(`${APP_HOST}`:${APP_PORT})
