@@ -13,4 +13,22 @@ const addTodo = async ({request, response}: {request: Request, response: Respons
 	const {value: {
 		title, description
 	}} = await request.body();
-}
+
+	if(!title || !description){
+		response.status = 422;
+		response.body = {msg: "Title and description required"};
+		return;
+	}
+
+	const newTodo: ToDos = {id: uuid.generate(), title, description}
+
+	let allTodos: ToDos[] = await getTodosFromJson()
+
+	allTodos = [newTodo, ...allTodos]
+
+	await writeDataToJson(allTodos)
+
+	response.body = {msg: "New todo created", newTodo};
+};
+
+export default addTodo
